@@ -30,7 +30,6 @@ class daoc:
             full_name = json_data['results'][0]['name'].split(" ")
 
         if name != json_data['results'][0]['name'] and name != full_name[0]:
-            output3 = "name is ..{}.. testing against  ..{}..".format(name, full_name[0])
             output2 = "Characters found: "
             for x in range(len(json_data['results'])):
                 output2 = output2 + json_data['results'][x]['name'] + " "
@@ -38,7 +37,6 @@ class daoc:
             output = "Exact match not found, {} matches found".format(len(json_data['results']))
             await self.bot.say(output)
             await self.bot.say(output2)
-            await self.bot.say(output3)
         else:
             guild = json_data['results'][0]['guild_info']['guild_name']
             name = json_data['results'][0]['name']
