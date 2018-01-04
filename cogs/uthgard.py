@@ -1,6 +1,6 @@
 import json
 import urllib.request
-import discord
+import urllib.error
 from discord.ext import commands
 
 
@@ -12,10 +12,23 @@ class uthgard:
     @commands.command()
     async def uthgard(self, switch, *name):
         name = " ".join(name)
+        if name == "":
+            name = switch
         switch = "player"
         url = "https://www2.uthgard.net/herald/api/{0}/{1}"\
             .format(switch, name)
-        uthUrl = urllib.request.urlopen(url)
+        try:
+            uthUrl = urllib.request.urlopen(url)
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                output = "Error looking up character {}. Check yo spellin".format(name)
+                await self.bot.say(output)
+                return
+            else:
+                output = "Uknown Error. Is Uthgard website online? "
+                await self.bot.say(output)
+                return
+
         mybytes = uthUrl.read()
         urlstring = mybytes.decode("utf8")
         uthUrl.close()
