@@ -29,7 +29,7 @@ class daoc:
         else:
             full_name = json_data['results'][0]['name'].split(" ")
 
-        if name != json_data['results'][0]['name'] or name != full_name[0]:
+        if name != json_data['results'][0]['name'] and name != full_name[0]:
             output3 = "name is ..{}.. testing against  ..{}..".format(name, full_name[0])
             output2 = "Characters found: "
             for x in range(len(json_data['results'])):
@@ -49,7 +49,7 @@ class daoc:
             rp = json_data['results'][0]['realm_points']
 
             output = "\n{0} the {1} {2} \nA member of {3} \nLevel: {4}\
-              RP: {5}".format(name.capitalize(), race, class_name, guild,
+              RP: {5}".format(name.title(), race, class_name, guild,
                               level, rp)
             await self.bot.say(output)
 
