@@ -314,7 +314,7 @@ class daoc:
             class_name = json_data['results'][0]['class_name']
             level = json_data['results'][0]['level']
             rp = json_data['results'][0]['realm_points']
-            rl = bisect.bisect_right(realm_points, rp)
+            rl = bisect.bisect_left(realm_points, rp)
 
             output = "\n{} the {} {} \n{} \nLevel: {}\
               RP: {}".format(name.title(), race, class_name, guild, level, levels[rl])
