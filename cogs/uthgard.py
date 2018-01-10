@@ -57,7 +57,7 @@ class uthgard:
             status = json_data['Status']
             players = json_data['Players']
 
-            output = "\n Server is currently {} \nThere are {} people playing".format(status, players)
+            output = "\n Server is currently: `{}` \nThere are {} people playing".format(status, players)
             await self.bot.say(output)
 
 
