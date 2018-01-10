@@ -12,11 +12,17 @@ class uthgard:
     @commands.command()
     async def uthgard(self, switch, *name):
         name = " ".join(name)
-        if name == "":
+        if name == "" and switch != "status":
             name = switch
-        switch = "player"
-        url = "https://www2.uthgard.net/herald/api/{0}/{1}"\
-            .format(switch, name)
+            switch = "player"
+
+        if switch == "player":
+            url = "https://www2.uthgard.net/herald/api/player/{0}".format(name)
+        elif switch == "status":
+            url = "https://www2.uthgard.net/api/serverstatus"
+        else:
+            url = "Error in switch"
+
         try:
             uthUrl = urllib.request.urlopen(url)
         except urllib.error.HTTPError as e:
@@ -33,18 +39,26 @@ class uthgard:
         urlstring = mybytes.decode("utf8")
         uthUrl.close()
 
-        json_data = json.loads(urlstring)
-        guild = json_data['Guild']
-        race = json_data['Race']
-        prof = json_data['Class']
-        level = json_data['Level']
-        preSplitRR = str(json_data['RealmRank'])
-        rr = preSplitRR[0] + "L" + preSplitRR[1]
+        if switch == "player":
+            json_data = json.loads(urlstring)
+            guild = json_data['Guild']
+            race = json_data['Race']
+            prof = json_data['Class']
+            level = json_data['Level']
+            preSplitRR = str(json_data['RealmRank'])
+            rr = preSplitRR[0] + "L" + preSplitRR[1]
 
-        output = "\n  {0} the {1} {2} \nA member of {3} \nLevel: {4}  RR: {5}"\
-            .format(name.capitalize(), race, prof, guild, level, rr)
+            output = "\n  {0} the {1} {2} \nA member of {3} \nLevel: {4}  RR: {5}"\
+                .format(name.capitalize(), race, prof, guild, level, rr)
 
-        await self.bot.say(output)
+            await self.bot.say(output)
+        elif switch == "status":
+            json_data = json.loads(urlstring)
+            status = json_data['Status']
+            players = json_data['Players']
+
+            output = "\n Server is currently {} \nThere are {} people playing".format(status, players)
+            await self.bot.say(output)
 
 
 def setup(bot):
